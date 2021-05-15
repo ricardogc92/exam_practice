@@ -1,0 +1,20 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+#container{
+    width: 970px;
+    margin: auto;
+    padding: 50px;
+
+}
+
+#body{
+    display: flex;
+    flex: space-between;
+    
+}
+
+.block{
+    width: 300px;
+}

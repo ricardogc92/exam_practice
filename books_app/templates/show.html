@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book</title>
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <h1>Welcome, {{user.first_name}}!</h1>
+            <a href="/logout">Log Out</a>
+        </div>
+        <div id="body">
+            <div id="show-book">
+                {% if user == book.added_by %}
+                <form action="{{book.id}}/edit" method="POST">
+                {% csrf_token %}
+                <div>
+                    <label for="title">Title:</label>
+                    <input type="text" name="title" placeholder="{{book.title}}">
+                </div>
+                <p>Added by: {{book.added_by.first_name}} {{book.added_by.last_name}}</p>
+                <p>Added on: {{book.created_at}}</p>
+                <p>Last updated on: {{book.updated_at}}</p>
+                <div>
+                    <label for="desc">Description:</label>
+                    <input type="text" name="desc" placeholder="{{book.desc}}">
+                </div>
+                <input type="submit" value="Update">
+                </form>
+                <button><a href="{{book.id}}/destroy">Delete</a></button>
+                {% else %}
+                <h2>{{book.title}}</h2>
+                <p>Added by: {{book.added_by.first_name}} {{book.added_by.last_name}}</p>
+                <p>Added on: {{book.created_at}}</p>
+                <p>Last updated on: {{book.updated_at}}</p>
+                <p>Description: {{book.desc}}</p>
+                {% endif %}
+            </div>
+            <div id="show-users">
+                <h2>Users Who Like This Book:</h2>
+                <ul>
+                    {% for user in users %}
+                    <li>{{user.first_name}} {{user.last_name}}</li>
+                    {% endfor %}
+                </ul>
+                {% if user not in users %}
+                <a href="/books/{{book.id}}/add_fav">Add to Favorites</a>
+                {% else %}
+                <a href="/books/{{book.id}}/remove">Un-Favorite</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

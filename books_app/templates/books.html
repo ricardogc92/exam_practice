@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <h1>Welcome, {{user.first_name}}!</h1>
+            <a href="/logout">Log Out</a>
+        </div>
+        <div id="body">
+            <div id="add_book">
+                <h2>Add a Favorite Book</h2>
+                {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                    <li>{{message}}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                <form action="create" method="POST">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                        <label for="colFormLabel" class="col-sm-1 col-form-label">Title</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="colFormLabel" placeholder="" name="title">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="colFormLabel" class="col-sm-1 col-form-label">Description</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="colFormLabel" placeholder="" name="desc">
+                        </div>
+                    </div>
+                    <input type="submit" value="Add" class="btn btn-primary">
+                </form>
+            </div>
+            <div id="show_books">
+                <h2>All Books</h2>
+                {% for book in books %}
+                <div class="indiv-book">
+                    <a href="/books/{{book.id}}">{{book.title}}</a>
+                    <p>(Added by {{book.added_by.first_name}} {{book.added_by.last_name}})</p>
+                    {% if user in book.users_liked_by.all %}
+                    <p>This is one of your favorites</p>
+                    {% else %}
+                    <a href="{{book.id}}/add_fav">Add to Favorites</a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
